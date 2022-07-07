@@ -1,0 +1,76 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical">
+
+    <FrameLayout
+        android:id="@+id/frame_container"
+        android:layout_width="match_parent"
+        android:layout_height="320dp"
+        tools:context="com.szzcs.quickpayaipos.MainActivity">
+
+
+    </FrameLayout>
+
+
+
+    <LinearLayout
+        android:id="@+id/scnf"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="186dp"
+            android:layout_height="150dp"
+            android:layout_gravity="center"
+            app:srcCompat="@drawable/quickpay" />
+
+        <TextView
+            android:id="@+id/viewname"
+
+
+            android:layout_width="234dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="false"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="false"
+            android:layout_gravity="right"
+            android:gravity="right"
+            android:paddingTop="15dp"
+            android:paddingRight="25dp"
+            android:text="contact@quickpay.ai"
+            android:textSize="15dp"
+            android:textStyle="normal"
+            tools:layout_editor_absoluteX="112dp"
+            tools:layout_editor_absoluteY="112dp" />
+
+        <TextView
+            android:id="@+id/version"
+
+
+            android:layout_width="234dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="false"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="false"
+            android:layout_gravity="right"
+            android:gravity="right"
+            android:paddingTop="15dp"
+            android:paddingRight="25dp"
+            android:text="v2.o"
+            android:textSize="10dp"
+            android:textStyle="normal"
+            tools:layout_editor_absoluteX="112dp"
+            tools:layout_editor_absoluteY="112dp" />
+
+
+
+    </LinearLayout>
+
+</LinearLayout>
+
