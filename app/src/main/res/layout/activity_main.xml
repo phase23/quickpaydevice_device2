@@ -15,12 +15,11 @@
     </FrameLayout>
 
 
-
     <LinearLayout
         android:id="@+id/scnf"
-        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
 
         <ImageView
@@ -67,7 +66,6 @@
             android:textStyle="normal"
             tools:layout_editor_absoluteX="112dp"
             tools:layout_editor_absoluteY="112dp" />
-
 
 
     </LinearLayout>

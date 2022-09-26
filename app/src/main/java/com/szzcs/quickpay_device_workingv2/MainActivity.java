@@ -2,9 +2,13 @@ package com.szzcs.quickpay_device_workingv2;
 
 import android.app.Dialog;
 import android.app.Fragment;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.support.v7.app.ActionBar;
 import android.text.TextUtils;
 import android.util.Log;
@@ -34,14 +38,54 @@ public class MainActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         super.setContentView(R.layout.activity_main);
-        actionBar = getSupportActionBar();
-        if (actionBar != null) {
-            actionBar.setTitle(getString(R.string.pref_settings));
+
+
+        int SDK_INT = android.os.Build.VERSION.SDK_INT;
+        if (SDK_INT > 8) {
+            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder()
+                    .permitAll().build();
+            StrictMode.setThreadPolicy(policy);
+            //your codes here
         }
-        Fragment fragment = new SettingsFragment();
-        if (savedInstanceState == null)
-            getFragmentManager().beginTransaction().add(R.id.frame_container, fragment).commit();
-        UpdateBuilder.create().check();
+
+        boolean connected = false;
+        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        if (connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE).getState() == NetworkInfo.State.CONNECTED ||
+                connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI).getState() == NetworkInfo.State.CONNECTED) {
+            //we are connected to a network
+            connected = true;
+        } else {
+            connected = false;
+        }
+
+
+
+
+
+
+        if(!connected) {
+            Toast.makeText(getApplicationContext(),"Check Internet & Restart App",Toast.LENGTH_LONG).show();
+            Intent nointernet = new Intent(MainActivity.this, Nointernet.class);
+            startActivity(nointernet);
+
+
+        }else {
+
+
+            actionBar = getSupportActionBar();
+            if (actionBar != null) {
+                actionBar.setTitle(getString(R.string.pref_settings));
+            }
+            Fragment fragment = new SettingsFragment();
+            if (savedInstanceState == null)
+                getFragmentManager().beginTransaction().add(R.id.frame_container, fragment).commit();
+            UpdateBuilder.create().check();
+
+
+        }
+
+
+
     }
 
     @Override

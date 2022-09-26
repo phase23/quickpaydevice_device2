@@ -62,7 +62,7 @@ public class Carddetails extends AppCompatActivity {
 
         String[] pieces = getcarddetails.split(Pattern.quote("^"));
         String cardpiece = pieces[0].trim();
-         getcardno = cardpiece.substring(1,16);
+         getcardno = cardpiece.substring(1,17);
 
         String namepiece = pieces[1].trim();
         String[] nameoutput = namepiece.split(Pattern.quote("/"));
