@@ -1,14 +1,17 @@
 package com.szzcs.quickpay_device_workingv2;
 
-import android.content.Intent;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Html;
 import android.text.Layout;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
-import android.widget.TextView;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 
 import com.szzcs.quickpay_device_workingv2.utils.DialogUtils;
 import com.zcs.sdk.DriverManager;
@@ -18,16 +21,13 @@ import com.zcs.sdk.Sys;
 import com.zcs.sdk.print.PrnStrFormat;
 import com.zcs.sdk.print.PrnTextStyle;
 
+import java.util.ArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.regex.Pattern;
 
-public class CardSuccess extends AppCompatActivity {
-    TextView gettransaction;
-    Button printr;
-    String getall;
-    Button blinkback;
+public class Showtransactions extends AppCompatActivity {
+    ListView listView;
     myDbAdapter helper;
-
     private DriverManager mDriverManager = DriverManager.getInstance();
     private Printer mPrinter;
     private boolean mPrintStatus = false;
@@ -39,126 +39,81 @@ public class CardSuccess extends AppCompatActivity {
     public static final String BAR_TEXT2 = "50002";
     public static final String BAR_TEXT3 = "50003";
     private ExecutorService mSingleThreadExecutor;
-
-
+    String cliked;
+    String requiredString;
+    ArrayList<String> arrayList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_card_success);
-        String gettransid = getIntent().getExtras().getString("transid");
-        getall = getIntent().getExtras().getString("puttall");
+        setContentView(R.layout.activity_showtransactions);
 
         helper = new myDbAdapter(this);
-
-        String[] pieces = getall.split(Pattern.quote("~"));
-        String icompany = pieces[13].trim();
-        String icountry = pieces[15].trim();
-        String idater = pieces[17].trim();
-        String itel = pieces[16].trim();
-        String itrans  = pieces[6].trim();
-        String ilastdigits  = pieces[9].trim();
-        String itotalp  = pieces[18].trim();
-        String  itimestamp  = pieces[20].trim();
-        String  tip  = pieces[21].trim();
-
-        double getTip = 0.00;
-        try {
-            getTip = Float.parseFloat(tip);
-        } catch(NumberFormatException nfe) {
-            System.out.println("Could not parse " + nfe);
-        }
-
-        double chargeprice = 0.00;
-        try {
-            chargeprice = Float.parseFloat(itotalp);
-        } catch(NumberFormatException nfe) {
-            System.out.println("Could not parse " + nfe);
-        }
-
-
-        int inttimestamp = 0;
-        try {
-            inttimestamp = Integer.parseInt(itimestamp);
-        } catch(NumberFormatException nfe) {
-            System.out.println("Could not parse " + nfe);
-        }
-
-        int intlastdigits = 0;
-        try {
-            intlastdigits = Integer.parseInt(ilastdigits);
-        } catch(NumberFormatException nfe) {
-            System.out.println("Could not parse " + nfe);
-        }
-
-
-
-        long id  = helper.insertData(itrans, inttimestamp, icompany, idater, getTip, chargeprice, intlastdigits );
-
-        if(id<=0)
-        {
-            //Message.message(getApplicationContext(),"Insertion Unsuccessful");
-            //Toast.makeText(getApplicationContext(), "Insertion Failed", Toast.LENGTH_LONG).show();
-
-
-        } else
-        {
-            Message.message(getApplicationContext(),"Transaction Completed");
-            //Toast.makeText(getApplicationContext(), "Transaction Completed", Toast.LENGTH_LONG).show();
-
-        }
-
-
-
-
-
-
-
-
-        gettransaction = (TextView)findViewById(R.id.transid);
-        gettransaction.setText(gettransid);
-
+        String data = helper.getData();
+        String[] trx = data.split(Pattern.quote("@"));
 
         mSingleThreadExecutor = mDriverManager.getSingleThreadExecutor();
 
         mDriverManager = DriverManager.getInstance();
         mPrinter = mDriverManager.getPrinter();
 
+        listView=(ListView)findViewById(R.id.listout);
+        arrayList =new ArrayList<>();
 
-        Log.i("[print] xx",getall);
+        for (int i = 0; i < trx.length; i++) {
 
-        printr = (Button)findViewById(R.id.print);
-        blinkback = (Button)findViewById(R.id.linkback);
+            arrayList.add(trx[i]);
+        }
 
+        ArrayAdapter arrayAdapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1,arrayList);
+        listView.setAdapter(arrayAdapter);
 
-
-        blinkback.setOnClickListener(new View.OnClickListener() {
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-                Intent intent = new Intent(CardSuccess.this, MainActivity.class);
+                 cliked = arrayList.get(position);
+                 requiredString = cliked.substring(cliked.indexOf("n:") + 1, cliked.indexOf("Da"));
+                //Toast.makeText(getApplicationContext(), "Click item " + position + " " + requiredString, Toast.LENGTH_LONG).show();
 
-                startActivity(intent);
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(Showtransactions.this);
+                builder.setTitle("Confirm Print");
+
+                builder.setMessage(Html.fromHtml("Confirm Print Receipt " ));
+
+                builder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
+
+                    public void onClick(DialogInterface dialog, int which) {
+                        Log.i("accept tag", requiredString);
+
+                        String getdata = helper.retrieveData(requiredString);
+
+                        printswipe(getdata);
+
+
+                    }
+                });
+
+                builder.setNegativeButton("NO", new DialogInterface.OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        // Do nothing
+                        dialog.dismiss();
+                    }
+                });
+
+                AlertDialog alert = builder.create();
+                alert.show();
+
 
             }
-
-        });
-
-
-
-        printr.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                printswipe(getall);
-
-            }
-
         });
 
 
     }
-
 
     private void printswipe(final String orders) {
 
@@ -174,7 +129,7 @@ public class CardSuccess extends AppCompatActivity {
                     public void run() {
                         int printStatus = mPrinter.getPrinterStatus();
                         if (printStatus == SdkResult.SDK_PRN_STATUS_PAPEROUT) {
-                            CardSuccess.this.runOnUiThread(new Runnable() {
+                            Showtransactions.this.runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
                                     DialogUtils.show(getApplicationContext(), getString(R.string.printer_out_of_paper));
@@ -183,15 +138,18 @@ public class CardSuccess extends AppCompatActivity {
                             });
                         } else {
 
+                            Log.i("print", orders);
                             String[] pieces = orders.split(Pattern.quote("~"));
-                            String company = pieces[13].trim();
-                            String country = pieces[15].trim();
-                            String dater = pieces[17].trim();
-                            String tel = pieces[16].trim();
-                            String trans  = pieces[3].trim();
-                            String lastdigits  = pieces[19].trim();
-                            String totalp  = pieces[18].trim();
-                            String  tip  = pieces[21].trim();
+                            String company = pieces[5].trim();
+                            String dater = pieces[1].trim();
+                            String lastdigits  = pieces[4].trim();
+                            String totalp  = pieces[3].trim();
+                            String tips  = pieces[2].trim();
+                            String trans  = pieces[0].trim();
+
+
+
+
 
                             PrnStrFormat format = new PrnStrFormat();
                             format.setTextSize(50);
@@ -201,12 +159,12 @@ public class CardSuccess extends AppCompatActivity {
                             mPrinter.setPrintAppendString(company, format);
                             format.setTextSize(30);
                             format.setStyle(PrnTextStyle.NORMAL);
-                            mPrinter.setPrintAppendString(tel, format);
+                            mPrinter.setPrintAppendString("copy", format);
                             format.setTextSize(25);
-                            mPrinter.setPrintAppendString(country, format);
+
                             format.setAli(Layout.Alignment.ALIGN_NORMAL);
                             mPrinter.setPrintAppendString("All prices in USD ", format);
-                            mPrinter.setPrintAppendString("Transaction: " + trans, format);
+                            mPrinter.setPrintAppendString("Traceid: " + trans, format);
                             // mPrinter.setPrintAppendString("Some Items may vary due to in-store availability", format);
                             mPrinter.setPrintAppendString("_________________________", format);
 
@@ -223,9 +181,8 @@ public class CardSuccess extends AppCompatActivity {
                                     public String  thisdelivery;
                                     public String alltotal;
                                  */
-
-                            mPrinter.setPrintAppendString("Tip : $" + tip , format);
-                            mPrinter.setPrintAppendString("Total : $" + totalp , format);
+                            mPrinter.setPrintAppendString("Tip : " + tips , format);
+                            mPrinter.setPrintAppendString("Total : " + totalp , format);
                             mPrinter.setPrintAppendString("Date : " + dater , format);
                             mPrinter.setPrintAppendString(" ", format);
                             format.setStyle(PrnTextStyle.NORMAL);
@@ -249,7 +206,7 @@ public class CardSuccess extends AppCompatActivity {
                      */
                             printStatus = mPrinter.setPrintStart();
                             if (printStatus == SdkResult.SDK_PRN_STATUS_PAPEROUT) {
-                                CardSuccess.this.runOnUiThread(new Runnable() {
+                                Showtransactions.this.runOnUiThread(new Runnable() {
                                     @Override
                                     public void run() {
                                         DialogUtils.show(getApplicationContext(), getString(R.string.printer_out_of_paper));
@@ -269,18 +226,13 @@ public class CardSuccess extends AppCompatActivity {
 
     }
 
-
-
-
-
-
     private void printPaperOut() {
         new Thread(new Runnable() {
             @Override
             public void run() {
                 int printStatus = mPrinter.getPrinterStatus();
                 if (printStatus == SdkResult.SDK_PRN_STATUS_PAPEROUT) {
-                    CardSuccess.this.runOnUiThread(new Runnable() {
+                    Showtransactions.this.runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
                             DialogUtils.show(getApplicationContext(), getString(R.string.printer_out_of_paper));
@@ -316,6 +268,8 @@ public class CardSuccess extends AppCompatActivity {
         }
         return pid[0];
     }
+
+
 
 
 

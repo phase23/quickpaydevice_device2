@@ -111,6 +111,8 @@ public class CardFragment extends PreferenceFragment {
         // search card and read, just wait a moment
         searchBankCard(CardReaderTypeEnum.MAG_CARD);
 
+
+/*
         // read mag card
         findPreference(getString(R.string.key_magnetic)).setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override

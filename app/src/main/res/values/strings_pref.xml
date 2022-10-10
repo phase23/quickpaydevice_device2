@@ -21,6 +21,9 @@
     <string name="pref_registercard">Register a Card</string>
     <string name="key_registercard">Register a Card</string>
 
+    <string name="pref_transactions">Card Transactions</string>
+    <string name="key_transactions">Card Transactions</string>
+
     <string name="pref_viewpoints">View Points on Card</string>
     <string name="key_viewpoints">View Points on Card </string>
 
@@ -64,8 +67,8 @@
     <string name="key_bt">Bluetooth</string>
     <string name="pref_bt">Bluetooth</string>
 
-    <string name="pref_card">Swipe Card</string>
-    <string name="key_card">Swipe Card</string>
+    <string name="pref_card">Charge Card</string>
+    <string name="key_card">Charge Card</string>
 
     <string name="pref_magnetic">Try Card Again</string>
     <string name="key_magnetic">Try Card Again</string>
