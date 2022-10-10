@@ -245,7 +245,6 @@ public class Linkdevice extends AppCompatActivity {
                             format.setTextSize(50);
                             format.setAli(Layout.Alignment.ALIGN_CENTER);
                             format.setStyle(PrnTextStyle.BOLD);
-                            mPrinter.setPrintAppendString(" ", format);
                             mPrinter.setPrintAppendString(company, format);
                             format.setTextSize(30);
                             format.setStyle(PrnTextStyle.NORMAL);
@@ -393,15 +392,25 @@ public class Linkdevice extends AppCompatActivity {
                         Log.i("[print]",postaction);
                         postaction = postaction.trim();
 
+                        if(postaction.equals("Offline")){
 
-                        handler2.post(new Runnable() {
-                            @Override
-                            public void run() {
-                                setstatus.setText(postaction);
+                            Intent intent = new Intent(Linkdevice.this, Dolink.class);
+                            startActivity(intent);
+
+                        }
 
 
-                            }
-                        });
+                        if(postaction.equals("Online")) {
+                            handler2.post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    setstatus.setText(postaction);
+
+
+                                }
+                            });
+
+                        }
 
 
                     }

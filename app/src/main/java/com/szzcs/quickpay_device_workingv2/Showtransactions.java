@@ -73,7 +73,7 @@ public class Showtransactions extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
                  cliked = arrayList.get(position);
-                 requiredString = cliked.substring(cliked.indexOf("n:") + 1, cliked.indexOf("Da"));
+                 requiredString = cliked.substring(cliked.indexOf("d:") + 1, cliked.indexOf("Da"));
                 //Toast.makeText(getApplicationContext(), "Click item " + position + " " + requiredString, Toast.LENGTH_LONG).show();
 
 

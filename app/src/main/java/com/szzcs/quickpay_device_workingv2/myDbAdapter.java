@@ -58,7 +58,7 @@ public class myDbAdapter {
             String nicetip = NumberFormat.getCurrencyInstance(new Locale(LANGUAGE, COUNTRY)).format(tip);
 
 
-            buffer.append("\nTransaction:" +transactionid + "\nDate:" + nicedate   + "\n" + "Tip: " + nicetip + "\nTotal: " + nicecharge + "\n**** **** **** "+ lastdigit +  "@");
+            buffer.append("\nTraceId:" +transactionid + "\nDate:" + nicedate   + "\n" + "Tip: " + nicetip + "\nTotal: " + nicecharge + "\n**** **** **** "+ lastdigit +  "@");
 
 
         }
