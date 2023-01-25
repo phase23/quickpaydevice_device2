@@ -61,7 +61,7 @@
             android:gravity="right"
             android:paddingTop="15dp"
             android:paddingRight="25dp"
-            android:text="v2.o"
+            android:text="v3.o"
             android:textSize="10dp"
             android:textStyle="normal"
             tools:layout_editor_absoluteX="112dp"

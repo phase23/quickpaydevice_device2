@@ -160,6 +160,13 @@ public class CardSuccess extends AppCompatActivity {
     }
 
 
+    @Override
+    public void onBackPressed() {
+
+    }
+
+
+
     private void printswipe(final String orders) {
 
 
@@ -231,8 +238,8 @@ public class CardSuccess extends AppCompatActivity {
                             format.setStyle(PrnTextStyle.NORMAL);
                             mPrinter.setPrintAppendString("Thank you for being our customer! ", format);
                             mPrinter.setPrintAppendString("_________________________", format);
-                            mPrinter.setPrintAppendString("Accept credit cards anywhere ", format);
-                            mPrinter.setPrintAppendString("visit:quickpay.ai ", format);
+                            mPrinter.setPrintAppendString("Your bank statement will read ", format);
+                            mPrinter.setPrintAppendString("JAD St.KITTS for this transaction", format);
                             mPrinter.setPrintAppendString(" ", format);
                             mPrinter.setPrintAppendString(" ", format);
                             mPrinter.setPrintAppendString(" ", format);
