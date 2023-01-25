@@ -109,6 +109,7 @@
         android:layout_height="wrap_content"
         android:width="150dp"
         android:hint="$0.00"
+        android:text="0"
         android:textSize="22dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

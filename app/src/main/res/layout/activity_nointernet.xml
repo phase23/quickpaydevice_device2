@@ -11,7 +11,7 @@
         android:layout_width="301dp"
         android:layout_height="86dp"
         android:gravity="center"
-        android:text="Check Internet Connection and relaunch"
+        android:text="Check Internet Connection and Relaunch"
         android:textSize="18sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/relaunch"
